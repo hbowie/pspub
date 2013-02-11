@@ -1,8 +1,9 @@
 package com.powersurgepub.pspub;
 
+  import com.powersurgepub.psdatalib.script.*;
+  import com.powersurgepub.psdatalib.textmerge.*;
   import com.powersurgepub.psdatalib.ui.*;
   import com.powersurgepub.pstextmerge.*;
-  import com.powersurgepub.pstextmerge.script.*;
   import com.powersurgepub.psutils.*;
   import com.powersurgepub.xos2.*;
   import java.io.*;
@@ -721,7 +722,7 @@ public class PublishWindow
           }
         }
         else
-        if (publishScriptName.getExt().equalsIgnoreCase(PSTextMerge.SCRIPT_EXT)) {
+        if (publishScriptName.getExt().equalsIgnoreCase(TextMergeScript.SCRIPT_EXT)) {
           PSTextMerge.execScript (
               publishScript.getAbsolutePath(),
               Logger.getShared(),
