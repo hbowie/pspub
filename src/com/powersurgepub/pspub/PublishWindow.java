@@ -195,8 +195,6 @@ public class PublishWindow
    */
   public void saveSource() {
     
-    System.out.println("PublishWindow.saveSource");
-    
     // If user has requested that we publish on save, then publish now.
     checkForPublication(SAVE);
     
