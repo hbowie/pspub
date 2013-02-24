@@ -84,6 +84,8 @@ public class PublishWindow
   private             File             publishTo = null;
   
   private             StatusBar        statusBar = null;
+  
+  private             Home             home = Home.getShared();
 
   /** 
    Creates new form PublishWindow. Sets up the window,
@@ -762,16 +764,8 @@ public class PublishWindow
 
    @param file The file to be browsed.
    */
-  private void openURL (File file) {
-    try {
-      URI uri = file.toURI();
-      URL url = uri.toURL();
-      openURL(url.toString());
-    }
-    catch (MalformedURLException e) {
-      Trouble.getShared().report("Trouble browsing the File " + file.toString(),
-          "Browser Launch Problem");
-    }
+  private boolean openURL (File file) {
+    return home.openURL(file);
   }
 
   /**
@@ -779,18 +773,8 @@ public class PublishWindow
 
    @param url The URL to be browsed.
    */
-  private void openURL (String url) {
-    String urlToOpen = StringUtils.cleanURLString(url);
-    // System.out.println ("urlToOpen = " + urlToOpen);
-    try {
-      XOS.getShared().openURL (urlToOpen);
-    } catch (java.io.IOException e) {
-      Trouble.getShared().report
-          ("Trouble opening Web page " + url, "Web Browser Problem");
-      Logger.getShared().recordEvent (LogEvent.MEDIUM,
-        "Open URL IO Exception " + e.toString(),
-        false);
-    }
+  private boolean openURL (String url) {
+    return home.openURL(url);
   }
   
   /**
