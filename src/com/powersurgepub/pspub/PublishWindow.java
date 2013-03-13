@@ -1311,6 +1311,7 @@ private void templateApplyButtonActionPerformed(java.awt.event.ActionEvent evt) 
 
 private void publishToBrowseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_publishToBrowseButtonActionPerformed
 
+  inputSource = SYSTEM_INPUT;
   if (publishToComboBox.getSelectedItem() != null
       && publishToComboBox.getSelectedItem().toString().length() > 0) {
     askAddOrReplace();
@@ -1332,6 +1333,7 @@ private void publishToBrowseButtonActionPerformed(java.awt.event.ActionEvent evt
       }
     } // end if user chose a folder
   } // end if user specified whether to add or replace
+  inputSource = USER_INPUT;
 }//GEN-LAST:event_publishToBrowseButtonActionPerformed
 
 private void publishNowButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_publishNowButtonActionPerformed
