@@ -103,7 +103,6 @@ public class PublishWindow
     }  catch (java.io.IOException ioex) {
       defaultTemplatesFolderText = "";
     }
-    // System.out.println("PublishWindow constructed");
   }
 
   /**
@@ -121,8 +120,6 @@ public class PublishWindow
       publishWhenComboBox.addItem(PUBLISH_ON_SAVE);
     }
     setPublishWhen (publishWhen);
-    // System.out.println("PublishWindow.setOnSaveOption valid? " +
-    //     String.valueOf(onSaveOption));
   }
 
   /**
@@ -138,7 +135,6 @@ public class PublishWindow
     inputSource = SYSTEM_INPUT;
 
     // Load the list of all known publications for this data source
-    // System.out.println("PublishWindow.openSource: " + source.toString());
     pubs = new ArrayList();
     currentSelectionIndex = -1;
     publishToComboBox.setSelectedItem("");
@@ -155,7 +151,6 @@ public class PublishWindow
           && (oldFile != null
             && oldFile.exists())) {
         inFile = oldFile;
-        // System.out.println("PublishWindow.openSource using old file");
       }
       if (inFile != null
           && inFile.exists()
@@ -172,7 +167,6 @@ public class PublishWindow
             publishToText = sourceProps.getProperty(
               PUBLISH_TO + "-" + String.valueOf(i));
           }
-          // System.out.println("PublishWindow.openSource input loaded");
         } catch (java.io.FileNotFoundException exfnf) {
           System.out.println ("File not found");
         } catch (java.io.IOException exio) {
@@ -210,8 +204,6 @@ public class PublishWindow
    source folder passed at open. 
    */
   public void closeSource() {
-
-    // System.out.println("PublishWindow.closeSource");
     
     // If user has requested that we publish on close, then publish now
     checkForPublication(CLOSE);
@@ -224,8 +216,6 @@ public class PublishWindow
    Save the list of publications for this data source.
    */
   private void savePubsForSource() {
-    
-    // System.out.println("PublishWindow.savePubsForSource");
     
     if (source != null
         && source.exists()
@@ -688,7 +678,11 @@ public class PublishWindow
     // See if we have a good publishTo location
     if (currentSelectionIndex >= 0) {
       publishTo = new File ((String)publishToComboBox.getSelectedItem());
+      Logger.getShared().recordEvent (LogEvent.NORMAL,
+        "Publishing to " + publishTo.toString(), false);
       File publishScript = getPublishScript();
+      Logger.getShared().recordEvent (LogEvent.NORMAL,
+        "Using Script  " + publishScript.toString(), false);
       boolean ok = true;
       if (! publishTo.exists()) {
         ok = publishTo.mkdirs();
@@ -798,8 +792,6 @@ public class PublishWindow
         option = CANCEL;
       }
     }
-    // System.out.println("PublishWindow.askRemove option set to "
-    //     + String.valueOf(option));
   }
 
   /**
@@ -830,8 +822,6 @@ public class PublishWindow
    */
   private void addOrReplaceOrRemove(String publishTo) {
 
-    // System.out.println("PublishWindow.addOrReplaceOrRemove option = " 
-    //     + String.valueOf(option));
     if (option == ADD) {
       savePublicationProperties(currentSelectionIndex);
       int pubsNumber = pubs.size();
@@ -1392,20 +1382,15 @@ private void publishWhenComboBoxActionPerformed(java.awt.event.ActionEvent evt) 
 
 private void publishToComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_publishToComboBoxActionPerformed
   if (inputSource == USER_INPUT) {
-    // System.out.println("PublishWindow.publishToComboBoxActionPerformed starting");
     inputSource = SYSTEM_INPUT;
     if (publishToComboBox.getSelectedIndex() >= 0) {
       // User has selected an existing value from the drop-down menu
-      // System.out.println("PublishWindow.publishToComboBoxActionPerformed index = " +
-      //     String.valueOf(publishToComboBox.getSelectedIndex()));
       switchPublishTo(
           currentSelectionIndex, 
           publishToComboBox.getSelectedIndex());
     } else {
       // User has typed in a new value
       String publishToString = (String)publishToComboBox.getSelectedItem();
-      // System.out.println("PublishWindow.publishToComboBoxActionPerformed string = "
-      //     + publishToString);
       if (option == UNDEFINED || option == CANCEL) {
         if (publishToString.length() == 0) {
           askRemove();
@@ -1415,7 +1400,6 @@ private void publishToComboBoxActionPerformed(java.awt.event.ActionEvent evt) {/
       }
       addOrReplaceOrRemove(publishToString);
     }
-    // System.out.println("PublishWindow.publishToComboBoxActionPerformed ending");
     inputSource = USER_INPUT;
   } // end method publishToComboBoxActionPerformed
 }//GEN-LAST:event_publishToComboBoxActionPerformed
