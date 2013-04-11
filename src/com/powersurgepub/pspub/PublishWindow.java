@@ -28,7 +28,9 @@ package com.powersurgepub.pspub;
  */
 public class PublishWindow
     extends javax.swing.JFrame
-      implements ScriptExecutor {
+      implements 
+        ScriptExecutor,
+        WindowToManage {
 
   public final static String PUBLISH_TO         = "publish-to";
   public final static String PUBLISH_URL        = "publish-url";
