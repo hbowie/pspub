@@ -1,3 +1,39 @@
+Introduction
+------------
+
+pspub is a [PowerSurge Publishing](http://www.powersurgepub.com) package providing a standard user interface for publishing a data collection in one or more text-based formats.
+
+Documentation
+-------------
+
+User documentation is available at [docs/index.md](docs/index.md).
+
+Source
+------
+
+Source code for pspub is available at
+
+	https://github.com/hbowie/pspub
+	
+Rights
+------ 
+
+### pspub 
+
+Copyright 2011 - 2013 Herb Bowie
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+	http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
 PowerSurge Publishing Java Package pspub
 ========================================
 
@@ -48,3 +84,6 @@ You will then see a window with the following fields available to you.
 	<dt>View Now</dt>
 	<dd>Press this button to view the resulting Web site in your Web browser.</dd>
 </dl>
+
+
+
