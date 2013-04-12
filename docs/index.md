@@ -63,7 +63,7 @@ You will then see a window with the following fields available to you.
 	
 		<li>E-Book -- This template will produce a file named 'iwisdom.epub'. You can drag and drop this file into iTunes, then sync it with your mobile device in order to access your collection from an iPhone, iPod Touch, or iPad. </li>
 		
-		<li>Web Site -- This template will produce a Web site that can be browsed from a computer or mobile device. See <a href="http://www.portablewisdom.org">PortableWisdom.org</a> for an example. Note that, if you're a <a href="http://www.me.com">Mobile Me</a> subscriber, you can easily publish to the Sites folder of your iDisk. As an example, the iDisk/Sites/wisdom/ folder on your Mac will be accessible on the Web via URL http://homepage.mac.com/membername/wisdom/.</li>
+		<li>Web Site -- This template will produce a Web site that can be browsed from a computer or mobile device. See <a href="http://www.portablewisdom.org">PortableWisdom.org</a> for an example. </li>
 		
 	</ul>
 	
