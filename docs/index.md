@@ -15,7 +15,7 @@ Rights
 
 PSPub Copyright &copy; 2011 - 2013 Herb Bowie
 
-LinkTweaker is [open source software][osd]. 
+PSPub is [open source software][osd]. 
 
 Licensed under the Apache License, Version 2.0 (the &#8220;License&#8221;); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 
