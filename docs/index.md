@@ -94,8 +94,6 @@ You will then see a window with the following fields available to you.
 </dl>
 
 [java]:       http://www.java.com/
-
 [pspub]:      http://www.powersurgepub.com/
-
 [osd]:				http://opensource.org/osd
 [apache]:			http://www.apache.org/licenses/LICENSE-2.0.html
