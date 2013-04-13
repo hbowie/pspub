@@ -1,5 +1,6 @@
 /**
- Provides a standard user interface for publishing a data collection in one or more text-based formats.
+ Provides a standard user interface for publishing a data collection in one or 
+ more text-based formats.
  <p>
 
  Copyright 2011 - 2013 Herb Bowie <p>
