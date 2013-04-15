@@ -848,6 +848,7 @@ public class PublishWindow
         publishToComboBox.addItem(publishTo);
       }
       publishToComboBox.setSelectedIndex(addedIndex);
+      setPublishTo(addedIndex);
       initPublicationProperties();
     }
     else
