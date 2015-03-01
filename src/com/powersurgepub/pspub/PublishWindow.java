@@ -850,6 +850,7 @@ public class PublishWindow
       publishToComboBox.setSelectedIndex(addedIndex);
       setPublishTo(addedIndex);
       initPublicationProperties();
+      lookForPublishScript(publishTo);
     }
     else
     if (option == REPLACE) {
@@ -860,6 +861,7 @@ public class PublishWindow
         publishToComboBox.insertItemAt(publishTo, selected);
         publishToComboBox.setSelectedIndex(selected);
         setPublishScript("");
+        lookForPublishScript(publishTo);
       }
     } 
     else
@@ -878,6 +880,31 @@ public class PublishWindow
     }
     option = UNDEFINED;
   } // end method addOrReplaceOrRemove
+  
+  private void lookForPublishScript (String publishTo) {
+    File publishToFolder = new File(publishTo);
+    if (publishToFolder.exists()
+        && publishToFolder.canRead()
+        && publishToFolder.isDirectory()) {
+      String[] candidates = publishToFolder.list();
+      boolean found = false;
+      int i = 0;
+      while (i < candidates.length && (! found)) {
+        String candidate = candidates[i];
+        if (candidate.endsWith(".tcz")) {
+          found = true;
+          File scriptFile = new File (publishToFolder, candidate);
+          String scriptText = "";
+          try {
+            scriptText = scriptFile.getCanonicalPath();
+          } catch (IOException ioe) {
+            scriptText = scriptFile.getAbsolutePath();
+          }
+          publishScriptText.setText((scriptText));
+        } // end if we found a tdf czar script file
+      } // end looking for a script file
+    } // end if we have a good folder
+  } // end method lookForPublishScript
   
   /**
    Sets the statusBar to be used for identifying status. 
