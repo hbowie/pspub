@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 - 2013 Herb Bowie
+ * Copyright 2011 - 2015 Herb Bowie
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -881,6 +881,12 @@ public class PublishWindow
     option = UNDEFINED;
   } // end method addOrReplaceOrRemove
   
+  /**
+   Let's check to see if we can find a publication script in the selected 
+   folder. 
+  
+   @param publishTo The folder selected by the user for publication. 
+  */
   private void lookForPublishScript (String publishTo) {
     File publishToFolder = new File(publishTo);
     if (publishToFolder.exists()
@@ -902,6 +908,9 @@ public class PublishWindow
           }
           publishScriptText.setText((scriptText));
         } // end if we found a tdf czar script file
+        else {
+          i++;
+        }
       } // end looking for a script file
     } // end if we have a good folder
   } // end method lookForPublishScript
@@ -1360,13 +1369,15 @@ private void publishToBrowseButtonActionPerformed(java.awt.event.ActionEvent evt
     chooser.setDialogTitle("Specify Target Folder for Publication");
     chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
     File chosen = chooser.showOpenDialog(this);
+    String publishToString = "";
     if (chosen != null) {
       try {
-        String publishToString = chosen.getCanonicalPath();
-        addOrReplaceOrRemove(publishToString);
+        publishToString = chosen.getCanonicalPath();
       } catch (java.io.IOException e) {
-        // Let's just pretend this whole thing never happened
+        System.out.println("I/O Exception looking for canonical path to " + chosen.toString());
+        publishToString = chosen.getAbsolutePath();
       }
+      addOrReplaceOrRemove(publishToString);
     } // end if user chose a folder
   } // end if user specified whether to add or replace
   inputSource = USER_INPUT;
