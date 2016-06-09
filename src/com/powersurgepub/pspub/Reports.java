@@ -16,8 +16,6 @@
 
 package com.powersurgepub.pspub;
 
-  import com.powersurgepub.psdatalib.pslist.*;
-  import com.powersurgepub.psdatalib.script.*;
   import com.powersurgepub.psdatalib.textmerge.*;
   import com.powersurgepub.pstextmerge.*;
   import com.powersurgepub.psutils.*;
@@ -38,22 +36,11 @@ package com.powersurgepub.pspub;
 
  @author Herb Bowie
  */
-public class Reports 
-      implements 
-        ScriptExecutor,
-        TextMergeController {
+public class Reports {
   
   public static final String REPORTS_FOLDER = "reports";
   
-  private     DataRecList         list = new DataRecList();
-  private     boolean             listAvailable = false;
-  
-  private     TextMergeInput      textMergeInput = null;
-  private     TextMergeScript     textMergeScript = null;
-  private     TextMergeFilter     textMergeFilter = null;
-  private     TextMergeSort       textMergeSort = null;
-  private     TextMergeTemplate   textMergeTemplate = null;
-  private     TextMergeOutput     textMergeOutput = null;
+  private TextMergeHarness    textMerge = null;
   
   private JMenu               reportsMenu = null;
   private File                appReportsFolder = null;
@@ -71,21 +58,8 @@ public class Reports
   */
   public Reports(JMenu reportsMenu) {
     this.reportsMenu = reportsMenu;
-
-    list = new DataRecList();
-    textMergeScript   = new TextMergeScript   (list);
-    textMergeInput    = new TextMergeInput    (list, this, textMergeScript);
-    textMergeFilter   = new TextMergeFilter   (list, textMergeScript);
-    textMergeSort     = new TextMergeSort     (list, textMergeScript);
-    textMergeTemplate = new TextMergeTemplate (list, textMergeScript);
-    textMergeOutput   = new TextMergeOutput   (list, textMergeScript);
-    // textMergeScript.allowAutoplay(mainClass);
-    textMergeScript.setInputModule(textMergeInput);
-    textMergeScript.setFilterModule(textMergeFilter);
-    textMergeScript.setOutputModule(textMergeOutput);
-    textMergeScript.setSortModule(textMergeSort);
-    textMergeScript.setTemplateModule(textMergeTemplate);
-    textMergeScript.setScriptExecutor(this);
+    textMerge = TextMergeHarness.getShared();
+    textMerge.initTextMergeModules();
   }
   
  
@@ -159,8 +133,8 @@ public class Reports
       if (reportScript != null
           && reportScript.exists()
           && reportScript.canRead()) {
-        textMergeScript.playScript(reportScript);
-        String reportFileName = textMergeTemplate.getOutputFileName();
+        textMerge.playScript(reportScript);
+        String reportFileName = textMerge.getOutputFileName();
         File reportFile = new File(reportFileName);
         if (reportFile != null
             && reportFile.exists()
@@ -169,35 +143,6 @@ public class Reports
         }
       } // end if we have a report script to execute
     } // end if we have a selected report
-  }
-  
-  /**
-   A method provided to PSTextMerge 
-  
-   @param operand
-   */
-  public void scriptCallback(String operand) {
-
-  }
-  
-  /**
-   Indicate whether or not a list has been loaded. 
-  
-   @param listAvailable True if a list has been loaded, false if the list
-                        is not available. 
-  */
-  public void setListAvailable (boolean listAvailable) {
-    this.listAvailable = listAvailable;
-  }
-  
-  /**
-   Indicate whether or not a list has been loaded. 
-  
-   @return True if a list has been loaded, false if the list is not 
-           available. 
-  */
-  public boolean isListAvailable() {
-    return listAvailable;
   }
 
 }

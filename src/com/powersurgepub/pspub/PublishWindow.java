@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 - 2015 Herb Bowie
+ * Copyright 2011 - 2016 Herb Bowie
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -104,6 +104,8 @@ public class PublishWindow
   private             StatusBar        statusBar = null;
   
   private             Home             home = Home.getShared();
+  
+  private             TextMergeHarness textMerge = null;
 
   /** 
    Creates new form PublishWindow. Sets up the window,
@@ -121,6 +123,9 @@ public class PublishWindow
     }  catch (java.io.IOException ioex) {
       defaultTemplatesFolderText = "";
     }
+    textMerge = TextMergeHarness.getShared();
+    textMerge.setExecutor(this);
+    textMerge.initTextMergeModules();
   }
 
   /**
@@ -735,10 +740,7 @@ public class PublishWindow
         }
         else
         if (publishScriptName.getExt().equalsIgnoreCase(TextMergeScript.SCRIPT_EXT)) {
-          PSTextMerge.execScript (
-              publishScript.getAbsolutePath(),
-              Logger.getShared(),
-              this);
+          textMerge.playScript (publishScript.getAbsolutePath());
           announceStatus("Published");
         } else {
           Trouble.getShared().report(
