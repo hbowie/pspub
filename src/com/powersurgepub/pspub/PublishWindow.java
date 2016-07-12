@@ -1417,18 +1417,20 @@ private void equivalentURLTextFocusLost(java.awt.event.FocusEvent evt) {//GEN-FI
 }//GEN-LAST:event_equivalentURLTextFocusLost
 
 private void viewNowButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewNowButtonActionPerformed
-  File indexFile = new File (getPublishTo(), INDEX_FILE_NAME);
-  if (indexFile.exists()
-      && indexFile.canRead()
-      && indexFile.isFile()) {
-    if (viewWhereComboBox.getSelectedIndex() == 0) {
-      openURL (indexFile);
-    } else {
-      String indexFileName = indexFile.getPath();
-      openURL (getEquivalentURLText()
-          + indexFileName.substring(getPublishToText().length()));
-    }
-  } // end if index file is available
+  if (getPublishTo() != null) {
+    File indexFile = new File (getPublishTo(), INDEX_FILE_NAME);
+    if (indexFile.exists()
+        && indexFile.canRead()
+        && indexFile.isFile()) {
+      if (viewWhereComboBox.getSelectedIndex() == 0) {
+        openURL (indexFile);
+      } else {
+        String indexFileName = indexFile.getPath();
+        openURL (getEquivalentURLText()
+            + indexFileName.substring(getPublishToText().length()));
+      }
+    } // end if index file is available
+  }
 }//GEN-LAST:event_viewNowButtonActionPerformed
 
 private void viewWhereComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewWhereComboBoxActionPerformed
