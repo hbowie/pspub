@@ -1466,7 +1466,7 @@ private void publishToComboBoxActionPerformed(java.awt.event.ActionEvent evt) {/
 }//GEN-LAST:event_publishToComboBoxActionPerformed
 
 private void formComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentHidden
-  WindowMenuManager.getShared().hide(this);
+  WindowMenuManager.getShared().hideAndRemove(this);
 }//GEN-LAST:event_formComponentHidden
 
 
