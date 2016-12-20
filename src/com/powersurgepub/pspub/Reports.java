@@ -19,6 +19,9 @@ package com.powersurgepub.pspub;
   import com.powersurgepub.psdatalib.textmerge.*;
   import com.powersurgepub.pstextmerge.*;
   import com.powersurgepub.psutils.*;
+  import com.powersurgepub.psdatalib.script.*;
+  import com.powersurgepub.psdatalib.txbio.*;
+  import com.powersurgepub.psdatalib.txbmodel.*;
   import java.io.*;
   import java.util.*;
   import javax.swing.*;
@@ -39,8 +42,11 @@ package com.powersurgepub.pspub;
 public class Reports {
   
   public static final String REPORTS_FOLDER = "reports";
+  public static final String WEBPREFS_FILE  = "webprefs.css";
+  public static final String CSSHREF_FILE   = "csshref.html";
   
   private TextMergeHarness    textMerge = null;
+  private ScriptExecutor      scriptExec = null;
   
   private JMenu               reportsMenu = null;
   private File                appReportsFolder = null;
@@ -49,6 +55,10 @@ public class Reports {
   private boolean             dataReportsFolderPopulated = false;
   
   private SortedMap<String, Report>   reports = new TreeMap<String, Report>();
+  
+  private WebPrefsProvider    webPrefs = null;
+  
+  private     MarkupWriter        markupWriter;
   
   /**
    Construct a new report object. 
@@ -62,6 +72,20 @@ public class Reports {
     textMerge.initTextMergeModules();
   }
   
+  /**
+   Set the Executor that is to receive any callbacks from the script. 
+  
+   @param scriptExec The Executor that is to receive any 
+                     callbacks from the script.
+  */
+  public void setScriptExecutor(ScriptExecutor scriptExec) {
+    this.scriptExec = scriptExec;
+    textMerge.setExecutor(scriptExec);
+  }
+  
+  public void setWebPrefs(WebPrefsProvider webPrefs) {
+    this.webPrefs = webPrefs;
+  }
  
   /**
    Provide a new folder full of application data, which may contain a 
@@ -81,13 +105,27 @@ public class Reports {
     
     if (dataReportsFolder.exists()) {
       loadReports (dataReportsFolder);
+      Logger.getShared().recordEvent(LogEvent.NORMAL, 
+          "Loading reports from " + dataReportsFolder.toString(), false);
     }
     
     if (reports.isEmpty()) {
+      Logger.getShared().recordEvent(LogEvent.NORMAL, 
+          "Loading reports from " + appReportsFolder.toString(), false);
       loadReports (appReportsFolder);
       dataReportsFolderPopulated = false;
     }
     
+  }
+  
+  /**
+   Get the location of the reports folder into which reports should be written. 
+  
+   @return The location of the reports folder into which 
+           reports should be written. 
+  */
+  public File getReportsFolder() {
+    return dataReportsFolder;
   }
   
   /**
@@ -133,9 +171,52 @@ public class Reports {
       if (reportScript != null
           && reportScript.exists()
           && reportScript.canRead()) {
+        if (scriptExec != null) {
+          textMerge.setExecutor(scriptExec);
+        }
+        
+        if (webPrefs != null) {
+          File cssFile = new File(dataReportsFolder, WEBPREFS_FILE);
+          markupWriter = new MarkupWriter (cssFile, MarkupWriter.HTML_FRAGMENT_FORMAT);
+          markupWriter.openForOutput();
+          markupWriter.writeLine ("      body, p, h1, li {");
+          markupWriter.writeLine ("        font-family: \"" + webPrefs.getFontFamily() 
+                                            + "\"" + ", Verdana, Geneva, sans-serif;");
+          markupWriter.writeLine ("        font-size: " + webPrefs.getFontSize() + ";");
+          markupWriter.writeLine ("      }");
+          markupWriter.close();
+          
+          String cssHref = webPrefs.getCSShref();
+          if (cssHref != null && cssHref.length() > 0) {
+            File cssHrefFile = new File(dataReportsFolder, CSSHREF_FILE);
+            markupWriter = new MarkupWriter (cssHrefFile, MarkupWriter.HTML_FRAGMENT_FORMAT);
+            markupWriter.openForOutput();
+            StringBuffer textOut = new StringBuffer("  ");
+            textOut.append ("<" + TextType.LINK);
+            textOut.append (" " 
+                + TextType.REL + "=\""  
+                + TextType.STYLESHEET + "\"");
+            textOut.append (" " 
+                + TextType.TYPE + "=\""  
+                + TextType.TEXT_CSS + "\"");
+            textOut.append (" " 
+                + TextType.HREF + "=\""  
+                + cssHref + "\"");
+            textOut.append (" />");
+            markupWriter.writeLine (textOut.toString());
+            markupWriter.close();
+          }
+        }
+        
+        textMerge.resetOutputFileName();
         textMerge.playScript(reportScript);
-        String reportFileName = textMerge.getOutputFileName();
-        File reportFile = new File(reportFileName);
+        String reportFileName = textMerge.getOutputFileName().trim();
+        File reportFile = null;
+        if (reportFileName == null || reportFileName.length() == 0) {
+          reportFile = new File(dataReportsFolder, report.getHTMLName());
+        } else {
+          reportFile = new File(reportFileName);
+        }
         if (reportFile != null
             && reportFile.exists()
             && reportFile.canRead()) {

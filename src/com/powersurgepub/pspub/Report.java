@@ -31,6 +31,7 @@ public class Report {
   private File    reportScript = null;
   private String  reportKey = null;
   private String  reportName = null;
+  private String  reportHTML = null;
   
   /**
    Construct a Report object, given a script file to generate it. 
@@ -43,6 +44,7 @@ public class Report {
     FileName reportFileName = new FileName(reportScript);
     reportName = reportFileName.getFileNameEnglish();
     reportKey = StringUtils.commonName(reportFileName.getBase());
+    reportHTML = reportFileName.replaceExt("html");
   }
   
   /**
@@ -81,6 +83,10 @@ public class Report {
   */
   public String getFileName() {
     return reportScript.getName();
+  }
+  
+  public String getHTMLName() {
+    return reportHTML;
   }
   
   /**
